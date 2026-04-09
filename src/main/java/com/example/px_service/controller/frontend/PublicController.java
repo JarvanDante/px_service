@@ -27,7 +27,8 @@ public class PublicController {
 
     @GetMapping("/users")
     public ApiResponse<List<UserResponse>> listUsers() {
-        return ApiResponse.success(publicService.listUsers());
+//        return ApiResponse.success(publicService.listUsers());
+        return ApiResponse.error("出错误了！");
     }
 
 }
