@@ -1,5 +1,6 @@
 package com.example.px_service.controller.frontend;
 
+import com.example.px_service.common.ApiResponse;
 import com.example.px_service.dto.UserResponse;
 import com.example.px_service.service.PublicService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +26,8 @@ public class PublicController {
     }
 
     @GetMapping("/users")
-    public List<UserResponse> listUsers() {
-        return publicService.listUsers();
+    public ApiResponse<List<UserResponse>> listUsers() {
+        return ApiResponse.success(publicService.listUsers());
     }
 
 }
