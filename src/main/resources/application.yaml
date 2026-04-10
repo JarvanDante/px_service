@@ -18,3 +18,8 @@ spring:
       port: ${REDIS_PORT:6379}
       username: ${REDIS_USERNAME:root}
       password: ${REDIS_PASSWORD:654321}
+  spring:
+    messages:
+      basename: messages
+      encoding: UTF-8
+      fallback-to-system-locale: false
