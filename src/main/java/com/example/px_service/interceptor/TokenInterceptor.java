@@ -15,15 +15,16 @@ public class TokenInterceptor implements HandlerInterceptor {
                              Object handler) throws Exception {
         String token = request.getHeader("Authorization");
 
+        if (token == null || token.isBlank()) {
+            writeError(response, "token missing");
+            return false;
+        }
+
         // 增加这一行：如果 token 以 "Bearer " 开头，就截取掉
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
 
-        if (token == null || token.isBlank()) {
-            writeError(response, "token missing");
-            return false;
-        }
 
         try {
             Long userId = JwtUtil.parseToken(token);
