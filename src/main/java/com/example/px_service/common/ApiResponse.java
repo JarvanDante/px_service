@@ -1,6 +1,5 @@
 package com.example.px_service.common;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -13,11 +12,9 @@ public class ApiResponse<T> {
     private T data;
     private long timestamp;
 
-    @Autowired
     private static MessageSource messageSource;
 
-    @Autowired
-    public void setMessageSource(MessageSource messageSource) {
+    public static void setMessageSource(MessageSource messageSource) {
         ApiResponse.messageSource = messageSource;
     }
 
@@ -47,6 +44,9 @@ public class ApiResponse<T> {
     private static String getMessage(String key, Locale locale) {
         try {
             System.out.println("1111当前 locale: " + locale);  // 打印看看
+            if (messageSource == null) {
+                return key;
+            }
             return messageSource.getMessage(key, null, locale);
         } catch (Exception e) {
             System.out.println("222222获取失败，key: " + key + ", locale: " + locale);  // 打印失败原因

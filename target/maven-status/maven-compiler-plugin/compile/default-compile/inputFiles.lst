@@ -2,6 +2,8 @@
 /Users/wangdante/D/kugou/px/px_service/src/main/java/com/example/px_service/common/ApiResponse.java
 /Users/wangdante/D/kugou/px/px_service/src/main/java/com/example/px_service/common/GlobalExceptionHandler.java
 /Users/wangdante/D/kugou/px/px_service/src/main/java/com/example/px_service/common/ResultCode.java
+/Users/wangdante/D/kugou/px/px_service/src/main/java/com/example/px_service/config/ApiResponseMessageSourceInitializer.java
+/Users/wangdante/D/kugou/px/px_service/src/main/java/com/example/px_service/config/I18nConfig.java
 /Users/wangdante/D/kugou/px/px_service/src/main/java/com/example/px_service/config/WebConfig.java
 /Users/wangdante/D/kugou/px/px_service/src/main/java/com/example/px_service/controller/AuthController.java
 /Users/wangdante/D/kugou/px/px_service/src/main/java/com/example/px_service/controller/DemoController.java
