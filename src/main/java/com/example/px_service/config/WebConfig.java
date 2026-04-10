@@ -18,8 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/api/frontend/login",
-                        "/error",
-                        "/test-msg"
+                        "/error"
+//                        "/test-msg"
                 );
 
     }
