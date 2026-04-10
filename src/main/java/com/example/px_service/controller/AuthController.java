@@ -8,14 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Locale;
-
 @RestController
 @RequestMapping("/api/frontend")
 public class AuthController {
 
     @PostMapping("/login")
-    public ApiResponse<String> login(@RequestBody LoginRequest request, Locale locale) {
+    public ApiResponse<String> login(@RequestBody LoginRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
 
@@ -27,6 +25,6 @@ public class AuthController {
         String token = JwtUtil.generateToken(1);
 
 
-        return ApiResponse.success(token, locale);
+        return ApiResponse.success(token);
     }
 }

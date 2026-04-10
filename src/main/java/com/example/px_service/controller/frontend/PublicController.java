@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/frontend")
@@ -27,8 +26,8 @@ public class PublicController {
     }
 
     @GetMapping("/users")
-    public ApiResponse<List<UserResponse>> listUsers(Locale locale) {
-        return ApiResponse.success(publicService.listUsers(), locale);
+    public ApiResponse<List<UserResponse>> listUsers() {
+        return ApiResponse.success(publicService.listUsers());
 //        return ApiResponse.error("出错误了！");
     }
 
