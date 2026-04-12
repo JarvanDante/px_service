@@ -42,6 +42,16 @@ public class ApiResponse<T> {
         return new ApiResponse<>(finalCode, message, null);
     }
 
+    public static <T> ApiResponse<T> errorByKey(String key) {
+        return errorByKey(key, null);
+    }
+
+    public static <T> ApiResponse<T> errorByKey(String key, Integer code) {
+        Locale locale = LocaleContextHolder.getLocale();
+        String message = getMessage(key, locale);
+        return error(message, code);
+    }
+
     private static String getMessage(String key, Locale locale) {
         try {
             System.out.println("当前 locale: " + locale);  // 打印看看
