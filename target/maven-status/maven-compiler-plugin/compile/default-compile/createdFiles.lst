@@ -5,8 +5,6 @@ com/example/px_service/dto/UserResponse.class
 com/example/px_service/PxServiceApplication.class
 com/example/px_service/controller/frontend/UserController.class
 com/example/px_service/controller/DemoController.class
-com/example/px_service/controller/AuthController.class
-com/example/px_service/dto/LoginRequest.class
 com/example/px_service/common/ApiResponse.class
 com/example/px_service/common/GlobalExceptionHandler.class
 com/example/px_service/service/PublicService.class

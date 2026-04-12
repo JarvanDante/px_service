@@ -11,7 +11,9 @@ public class I18nConfig {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource source = new ReloadableResourceBundleMessageSource();
+        source.setBasename("classpath:messages");
         source.setDefaultEncoding("UTF-8");
+        source.setFallbackToSystemLocale(false);
         return source;
     }
 }
