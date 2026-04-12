@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
                 .get(0)
                 .getDefaultMessage();
 
-        return ApiResponse.error(errorMsg);
+        return ApiResponse.error(errorMsg, 400);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
                 .iterator()
                 .next()
                 .getMessage();
-        return ApiResponse.error(errorMsg);
+        return ApiResponse.error(errorMsg, 400);
     }
 
 

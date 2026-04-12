@@ -34,8 +34,12 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> error(String message) {
+        return error(message, null);
+    }
 
-        return new ApiResponse<>(ResultCode.ERROR.getCode(), message, null);
+    public static <T> ApiResponse<T> error(String message, Integer code) {
+        int finalCode = (code == null) ? ResultCode.ERROR.getCode() : code;
+        return new ApiResponse<>(finalCode, message, null);
     }
 
     private static String getMessage(String key, Locale locale) {
