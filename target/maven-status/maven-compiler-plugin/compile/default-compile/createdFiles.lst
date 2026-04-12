@@ -10,8 +10,6 @@ com/example/px_service/dto/LoginRequest.class
 com/example/px_service/common/ApiResponse.class
 com/example/px_service/common/GlobalExceptionHandler.class
 com/example/px_service/service/PublicService.class
-com/example/px_service/config/ApiResponseMessageSourceInitializer.class
-com/example/px_service/controller/frontend/TestController.class
 com/example/px_service/config/WebConfig.class
 com/example/px_service/controller/frontend/PublicController.class
 com/example/px_service/domain/User.class
