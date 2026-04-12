@@ -12,15 +12,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer siteId;
+    private Integer siteId = 1;
 
-    private Integer gradeId;
+    private Integer gradeId = 1;
 
-    private Integer levelId;
+    private Integer levelId = 0;
 
-    private Integer agentId;
+    private Integer agentId = 0;
 
-    private Integer channelId;
+    private Integer channelId = 0;
 
     private String username;
 
@@ -53,15 +53,15 @@ public class User {
     @Column(length = 100)
     private String safeAnswer;
     private Integer showBeginnerGuide;
-    private String remark;
+    private String remark = "";
     private String siteCode;
     private String channelCode;
     private Instant createdAt;
     private Instant updatedAt;
-    private Integer payTimes;
+    private Integer payTimes = 0;
     private Integer hasPass;
     private String currency;
-    private Integer withdrawTimes;
+    private Integer withdrawTimes = 0;
     private Integer deleteAt;
     //=====set and get
 

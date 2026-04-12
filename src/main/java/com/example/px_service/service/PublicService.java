@@ -1,11 +1,14 @@
 package com.example.px_service.service;
 
+import com.example.px_service.domain.User;
 import com.example.px_service.dto.UserResponse;
+import com.example.px_service.dto.frontend.Public.RegisterRequest;
 import com.example.px_service.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -29,5 +32,22 @@ public class PublicService {
 
         return userList;
     }
+
+    @Transactional
+    public User createUser(@RequestBody RegisterRequest regDto) {
+        String mobile = regDto.getMobile();
+
+        User newUser = new User();
+        newUser.setUsername(regDto.getUsername());
+        newUser.setPassword(regDto.getPassword());
+        if (mobile != null) {
+            newUser.setMobile(mobile);
+        }
+        
+        User savedUser = userRepository.save(newUser);
+
+        return savedUser;
+    }
+
 
 }

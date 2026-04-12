@@ -10,11 +10,8 @@ public class I18nConfig {
 
     @Bean
     public MessageSource messageSource() {
-        System.out.println("===== MessageSource Bean 正在创建 =====");
         ReloadableResourceBundleMessageSource source = new ReloadableResourceBundleMessageSource();
-        source.setBasename("classpath:messages");
         source.setDefaultEncoding("UTF-8");
-        System.out.println("===== MessageSource Bean 创建完成 =====");
         return source;
     }
 }
