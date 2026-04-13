@@ -1,20 +1,34 @@
 package com.example.px_service.controller.frontend;
 
 import com.example.px_service.common.ApiResponse;
+import com.example.px_service.common.ApiRoutes;
+import com.example.px_service.dto.UserResponse;
+import com.example.px_service.service.PublicService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/frontend")
 public class UserController {
 
-    @GetMapping("/me")
+    private final PublicService publicService;
+
+    public UserController(PublicService publicService) {
+        this.publicService = publicService;
+    }
+
+    @GetMapping(ApiRoutes.USER_ME)
     public ApiResponse<Long> me(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
 
         return ApiResponse.success(userId);
+    }
+
+    @GetMapping(ApiRoutes.USER_LIST)
+    public ApiResponse<List<UserResponse>> listUsers() {
+        return ApiResponse.success(publicService.listUsers());
     }
 
 }

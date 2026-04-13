@@ -5,10 +5,11 @@ com/example/px_service/dto/UserResponse.class
 com/example/px_service/PxServiceApplication.class
 com/example/px_service/controller/frontend/UserController.class
 com/example/px_service/controller/DemoController.class
+com/example/px_service/controller/frontend/AuthController.class
 com/example/px_service/common/ApiResponse.class
 com/example/px_service/common/GlobalExceptionHandler.class
 com/example/px_service/service/PublicService.class
 com/example/px_service/config/WebConfig.class
-com/example/px_service/controller/frontend/PublicController.class
+com/example/px_service/common/ApiRoutes.class
 com/example/px_service/domain/User.class
 com/example/px_service/common/ResultCode.class

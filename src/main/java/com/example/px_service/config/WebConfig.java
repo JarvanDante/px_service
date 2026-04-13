@@ -1,5 +1,6 @@
 package com.example.px_service.config;
 
+import com.example.px_service.common.ApiRoutes;
 import com.example.px_service.interceptor.TokenInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -16,12 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns(
-                        "/api/frontend/login",
-                        "/api/frontend/register",
-                        "/error"
-//                        "/test-msg"
-                );
+                .excludePathPatterns(ApiRoutes.PUBLIC_WHITELIST);
 
     }
 
