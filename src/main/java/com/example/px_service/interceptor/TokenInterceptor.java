@@ -9,6 +9,12 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
 
+    private final JwtUtil jwtUtil;
+
+    public TokenInterceptor(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
@@ -27,7 +33,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
 
         try {
-            Long userId = JwtUtil.parseToken(token);
+            Long userId = jwtUtil.parseToken(token);
 
             request.setAttribute("userId", userId);
         } catch (Exception e) {

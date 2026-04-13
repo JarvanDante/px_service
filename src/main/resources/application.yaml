@@ -22,3 +22,5 @@ spring:
     basename: messages
     encoding: UTF-8
     fallback-to-system-locale: false
+  jwt:
+    key_secret: 12345678901234567890123456789012

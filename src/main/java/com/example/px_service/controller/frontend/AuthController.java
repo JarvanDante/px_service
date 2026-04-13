@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final PublicService publicService;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(PublicService publicService) {
+    public AuthController(PublicService publicService, JwtUtil jwtUtil) {
         this.publicService = publicService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping(ApiRoutes.AUTH_LOGIN)
@@ -32,7 +34,7 @@ public class AuthController {
             return ApiResponse.error("用户名或密码错误");
         }
 
-        String token = JwtUtil.generateToken(1);
+        String token = jwtUtil.generateToken(1);
         return ApiResponse.success(token);
     }
 
