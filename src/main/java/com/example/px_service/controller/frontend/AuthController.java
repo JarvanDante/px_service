@@ -8,6 +8,8 @@ import com.example.px_service.dto.frontend.Auth.RegisterRequest;
 import com.example.px_service.service.AuthService;
 import com.example.px_service.util.JwtUtil;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Validated
 public class AuthController {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final AuthService authService;
     private final JwtUtil jwtUtil;
@@ -27,14 +32,8 @@ public class AuthController {
 
     @PostMapping(ApiRoutes.AUTH_LOGIN)
     public ApiResponse<String> login(@Valid @RequestBody LoginRequest dto) {
-        String username = dto.getUsername();
-        String password = dto.getPassword();
-
-        if (!"admin".equals(username) || !"123456".equals(password)) {
-            return ApiResponse.error("用户名或密码错误");
-        }
-
-        String token = jwtUtil.generateToken(1);
+        User user = authService.loginUser(dto);
+        String token = jwtUtil.generateToken(user.getId());
         return ApiResponse.success(token);
     }
 
