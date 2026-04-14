@@ -1,10 +1,10 @@
 package com.example.px_service.util;
 
+import com.example.px_service.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -17,8 +17,9 @@ public class JwtUtil {
     private static final long EXPIRE = 1000 * 60 * 60; // 1小时
     private final Key key;
 
-    public JwtUtil(@Value("${spring.jwt.key_secret}") String secret) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    public JwtUtil(JwtProperties jwtProperties) {
+        String secret = jwtProperties.getKeySecret();
+        this.key = Keys.hmacShaKeyFor(jwtProperties.getKeySecret().getBytes(StandardCharsets.UTF_8));
     }
 
     /**

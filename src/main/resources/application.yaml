@@ -23,4 +23,4 @@ spring:
     encoding: UTF-8
     fallback-to-system-locale: false
   jwt:
-    key_secret: 12345678901234567890123456789012
+    key-secret: ${JWT_KEY_SECRET:12345678901234567890123456789012}
