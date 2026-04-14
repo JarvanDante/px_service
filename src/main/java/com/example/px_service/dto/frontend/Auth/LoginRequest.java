@@ -1,4 +1,4 @@
-package com.example.px_service.dto.frontend.Public;
+package com.example.px_service.dto.frontend.Auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

@@ -3,9 +3,9 @@ package com.example.px_service.controller.frontend;
 import com.example.px_service.common.ApiResponse;
 import com.example.px_service.common.ApiRoutes;
 import com.example.px_service.domain.User;
-import com.example.px_service.dto.frontend.Public.LoginRequest;
-import com.example.px_service.dto.frontend.Public.RegisterRequest;
-import com.example.px_service.service.PublicService;
+import com.example.px_service.dto.frontend.Auth.LoginRequest;
+import com.example.px_service.dto.frontend.Auth.RegisterRequest;
+import com.example.px_service.service.AuthService;
 import com.example.px_service.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class AuthController {
 
-    private final PublicService publicService;
+    private final AuthService authService;
     private final JwtUtil jwtUtil;
 
-    public AuthController(PublicService publicService, JwtUtil jwtUtil) {
-        this.publicService = publicService;
+    public AuthController(AuthService authService, JwtUtil jwtUtil) {
+        this.authService = authService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -40,6 +40,6 @@ public class AuthController {
 
     @PostMapping(ApiRoutes.AUTH_REGISTER)
     public ApiResponse<User> register(@Valid @RequestBody RegisterRequest regDto) {
-        return ApiResponse.success(publicService.createUser(regDto));
+        return ApiResponse.success(authService.createUser(regDto));
     }
 }
