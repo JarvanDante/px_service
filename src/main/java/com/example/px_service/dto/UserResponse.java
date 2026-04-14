@@ -3,7 +3,7 @@ package com.example.px_service.dto;
 import com.example.px_service.domain.User;
 
 public record UserResponse(
-        Integer id,
+        long id,
         Integer siteId,
         Integer channelId,
         String username,

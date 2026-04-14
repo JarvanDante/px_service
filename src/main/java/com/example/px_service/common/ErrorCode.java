@@ -7,7 +7,9 @@ public enum ErrorCode {
     AUTH_INVALID_CREDENTIALS(1001, "auth.invalid.credentials"),
     // 2xxx: 用户(user)
     //用户名已存在
-    USERNAME_DUPLICATE(2001, "user.username.duplicate");
+    USERNAME_DUPLICATE(2001, "user.username.duplicate"),
+    //用户名不存在
+    USERNAME_NOT_EXIST(2002, "user.username.notExist");
 
     private final int code;
     private final String messageKey;

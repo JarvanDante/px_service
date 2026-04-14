@@ -65,7 +65,7 @@ public class User {
     private Integer deleteAt;
     //=====set and get
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 

@@ -5,8 +5,10 @@ import com.example.px_service.common.ErrorCode;
 import com.example.px_service.domain.User;
 import com.example.px_service.dto.UserResponse;
 import com.example.px_service.dto.frontend.Auth.LoginRequest;
+import com.example.px_service.dto.frontend.Auth.LoginResponse;
 import com.example.px_service.dto.frontend.Auth.RegisterRequest;
 import com.example.px_service.repository.UserRepository;
+import com.example.px_service.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,8 +28,12 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository) {
+    @Autowired
+    private final JwtUtil jwtUtil;
+
+    public AuthService(UserRepository userRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     /**
@@ -48,13 +54,13 @@ public class AuthService {
     }
 
     @Transactional
-    public User loginUser(@RequestBody LoginRequest loginDto) {
+    public LoginResponse loginUser(@RequestBody LoginRequest loginDto) {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
 
         //用户名唯一
         if (!userRepository.existsByUsername(username)) {
-            throw new BizException(ErrorCode.USERNAME_DUPLICATE);
+            throw new BizException(ErrorCode.USERNAME_NOT_EXIST);
         }
         //密码判断
         User user = userRepository.findByUsername(username);
@@ -63,7 +69,21 @@ public class AuthService {
             throw new BizException(ErrorCode.AUTH_INVALID_CREDENTIALS);
         }
 
-        return user;
+        String token = jwtUtil.generateToken(user.getId());
+
+        LoginResponse.UserInfo userInfo = LoginResponse.UserInfo.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
+        LoginResponse loginResponse = LoginResponse
+                .builder()
+//                .tokenType("Bearer")
+                .token(token)
+                .expiresIn(3600L)
+                .userInfo(userInfo)
+                .build();
+        return loginResponse;
     }
 
     /**

@@ -28,7 +28,7 @@ public class JwtUtil {
      * @param userId
      * @return
      */
-    public String generateToken(Integer userId) {
+    public String generateToken(long userId) {
 
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
