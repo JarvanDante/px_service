@@ -1,6 +1,7 @@
 package com.example.px_service.service;
 
 import com.example.px_service.common.BizException;
+import com.example.px_service.common.ErrorCode;
 import com.example.px_service.domain.User;
 import com.example.px_service.dto.UserResponse;
 import com.example.px_service.dto.frontend.Auth.LoginRequest;
@@ -51,15 +52,15 @@ public class AuthService {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
 
-        //查询用户
+        //用户名唯一
         if (!userRepository.existsByUsername(username)) {
-            throw new BizException(401, "auth.invalid.credentials");
+            throw new BizException(ErrorCode.USERNAME_DUPLICATE);
         }
-
+        //密码判断
         User user = userRepository.findByUsername(username);
         Boolean isMatch = passwordEncoder.matches(password, user.getPassword());
         if (!isMatch) {
-            throw new BizException(401, "auth.invalid.credentials");
+            throw new BizException(ErrorCode.AUTH_INVALID_CREDENTIALS);
         }
 
         return user;
@@ -74,9 +75,9 @@ public class AuthService {
     @Transactional
     public User createUser(@RequestBody RegisterRequest regDto) {
         String mobile = regDto.getMobile();
-        //查询用户
+        //用户名唯一
         if (userRepository.existsByUsername(regDto.getUsername())) {
-            throw new BizException(409, "user.username.duplicate");
+            throw new BizException(ErrorCode.USERNAME_DUPLICATE);
         }
 
         //插入用户
