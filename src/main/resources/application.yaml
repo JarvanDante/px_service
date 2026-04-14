@@ -24,3 +24,13 @@ spring:
     fallback-to-system-locale: false
   jwt:
     key-secret: ${JWT_KEY_SECRET:12345678901234567890123456789012}
+
+logging:
+  file:
+    name: logs/app.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: logs/app-%d{yyyy-MM-dd}.%i.log
+      max-history: 30
+      max-file-size: 100MB
+      total-size-cap: 5GB

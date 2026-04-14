@@ -1,6 +1,8 @@
 package com.example.px_service.common;
 
 import jakarta.validation.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiResponse handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -29,10 +33,16 @@ public class GlobalExceptionHandler {
         return ApiResponse.error(errorMsg, 400);
     }
 
+    @ExceptionHandler(BizException.class)
+    public ApiResponse<?> handleBizException(BizException ex) {
+        return ApiResponse.errorByKey(ex.getMessageKey(), ex.getCode());
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ApiResponse<?> handleException(Exception e) {
-        return ApiResponse.error(e.getMessage());
+        log.error("Unhandled exception", e);
+        return ApiResponse.errorByKey(ResultCode.ERROR.getMessage(), ResultCode.ERROR.getCode());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

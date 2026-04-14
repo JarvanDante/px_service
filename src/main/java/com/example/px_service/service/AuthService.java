@@ -1,5 +1,6 @@
 package com.example.px_service.service;
 
+import com.example.px_service.common.BizException;
 import com.example.px_service.domain.User;
 import com.example.px_service.dto.UserResponse;
 import com.example.px_service.dto.frontend.Auth.LoginRequest;
@@ -52,13 +53,13 @@ public class AuthService {
 
         //查询用户
         if (!userRepository.existsByUsername(username)) {
-            throw new RuntimeException("用户名 '" + username + "' 不存在");
+            throw new BizException(401, "auth.invalid.credentials");
         }
 
         User user = userRepository.findByUsername(username);
         Boolean isMatch = passwordEncoder.matches(password, user.getPassword());
         if (!isMatch) {
-            throw new RuntimeException("密码不正确");
+            throw new BizException(401, "auth.invalid.credentials");
         }
 
         return user;
@@ -75,7 +76,7 @@ public class AuthService {
         String mobile = regDto.getMobile();
         //查询用户
         if (userRepository.existsByUsername(regDto.getUsername())) {
-            throw new RuntimeException("用户名 '" + regDto.getUsername() + "' 已被占用");
+            throw new BizException(409, "user.username.duplicate");
         }
 
         //插入用户
