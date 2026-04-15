@@ -69,7 +69,7 @@ public class AuthService {
             throw new BizException(BizCode.AUTH_INVALID_CREDENTIALS);
         }
 
-        String token = jwtUtil.generateToken(user.getId());
+        String token = jwtUtil.generateToken(user, "app");
 
         LoginResponse.UserInfo userInfo = LoginResponse.UserInfo.builder()
                 .id(user.getId())

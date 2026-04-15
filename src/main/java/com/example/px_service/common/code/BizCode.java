@@ -2,6 +2,9 @@ package com.example.px_service.common.code;
 
 public enum BizCode {
 
+    TOKEN_EXPIRED(401, "token.expired"),
+    TOKEN_INVALID(401, "token.invalid"),
+    TOKEN_MISSING(401, "token.missing"),
     // 1xxx: 认证(auth)
     //账号或密码错误
     AUTH_INVALID_CREDENTIALS(1001, "auth.invalid.credentials"),
