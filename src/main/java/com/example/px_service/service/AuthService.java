@@ -1,6 +1,6 @@
 package com.example.px_service.service;
 
-import com.example.px_service.common.code.BizCode;
+import com.example.px_service.common.enums.BizCode;
 import com.example.px_service.common.exception.BizException;
 import com.example.px_service.domain.User;
 import com.example.px_service.dto.UserResponse;

@@ -1,10 +1,10 @@
 package com.example.px_service.controller.frontend;
 
+import com.example.px_service.common.context.UserContext;
 import com.example.px_service.common.response.ApiResponse;
 import com.example.px_service.common.routes.ApiRoutes;
 import com.example.px_service.dto.UserResponse;
 import com.example.px_service.service.AuthService;
-import com.example.px_service.util.UserContext;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,6 +1,6 @@
 package com.example.px_service.common.exception;
 
-import com.example.px_service.common.code.BizCode;
+import com.example.px_service.common.enums.BizCode;
 
 import java.util.Objects;
 

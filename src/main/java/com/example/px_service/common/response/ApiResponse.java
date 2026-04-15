@@ -1,6 +1,6 @@
 package com.example.px_service.common.response;
 
-import com.example.px_service.common.code.ResultCode;
+import com.example.px_service.common.enums.ResultCode;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 

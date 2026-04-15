@@ -1,6 +1,6 @@
 package com.example.px_service.common.exception;
 
-import com.example.px_service.common.code.ResultCode;
+import com.example.px_service.common.enums.ResultCode;
 import com.example.px_service.common.response.ApiResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;

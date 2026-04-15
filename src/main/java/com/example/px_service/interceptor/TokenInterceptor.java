@@ -1,9 +1,9 @@
 package com.example.px_service.interceptor;
 
-import com.example.px_service.common.code.BizCode;
+import com.example.px_service.common.context.UserContext;
+import com.example.px_service.common.enums.BizCode;
 import com.example.px_service.common.exception.BizException;
 import com.example.px_service.util.JwtUtil;
-import com.example.px_service.util.UserContext;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

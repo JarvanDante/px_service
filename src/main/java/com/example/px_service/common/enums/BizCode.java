@@ -1,4 +1,4 @@
-package com.example.px_service.common.code;
+package com.example.px_service.common.enums;
 
 public enum BizCode {
 
