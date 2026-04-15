@@ -8,6 +8,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
 
+    private static final Logger log = LoggerFactory.getLogger(TokenInterceptor.class);
+    private static final String REQUEST_START_TIME = "requestStartTime";
     private final JwtUtil jwtUtil;
 
     public TokenInterceptor(JwtUtil jwtUtil) {
@@ -34,6 +38,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) throws Exception {
+        request.setAttribute(REQUEST_START_TIME, System.currentTimeMillis());
         String token = request.getHeader("Authorization");
 
         if (token == null || token.isBlank()) {
@@ -85,11 +90,27 @@ public class TokenInterceptor implements HandlerInterceptor {
                            HttpServletResponse response,
                            Object handler, ModelAndView modelAndView) throws Exception {
         Long userId = UserContext.getUserId();
-        if (userId != null) {
-            // 记录请求完成
-//            请求日志
-        }
-        System.out.println(">>> postHandle: Controller 执行完毕，正在渲染视图");
+        Long siteId = UserContext.getSiteId();
+        Long channelId = UserContext.getChannelId();
+
+        //请求计算：耗时
+        Long startedAt = (Long) request.getAttribute(REQUEST_START_TIME);
+        long costMs = startedAt == null ? -1L : System.currentTimeMillis() - startedAt;
+
+        String query = request.getQueryString();
+        String path = query == null ? request.getRequestURI() : request.getRequestURI() + "?" + query;
+        String clientIp = getClientIp(request);
+
+        log.info("request postHandle method={} path={} status={} ip={} costMs={} userId={} siteId={} channelId={}",
+                request.getMethod(),
+                path,
+                response.getStatus(),
+                clientIp,
+                costMs,
+                userId,
+                siteId,
+                channelId
+        );
     }
 
 
@@ -104,8 +125,25 @@ public class TokenInterceptor implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
-        System.out.println(">>> afterCompletion: 请求完全结束");
         // 务必在这里清理 ThreadLocal，防止内存泄漏 例如：UserContext.clear();
         UserContext.clear();
+    }
+
+    /**
+     * 获取IP
+     *
+     * @param request
+     * @return
+     */
+    private String getClientIp(HttpServletRequest request) {
+        String forwarded = request.getHeader("X-Forwarded-For");
+        if (forwarded != null && !forwarded.isBlank()) {
+            return forwarded.split(",")[0].trim();
+        }
+        String realIp = request.getHeader("X-Real-IP");
+        if (realIp != null && !realIp.isBlank()) {
+            return realIp.trim();
+        }
+        return request.getRemoteAddr();
     }
 }

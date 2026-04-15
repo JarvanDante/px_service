@@ -17,7 +17,7 @@ public final class ApiRoutes {
     public static final String AUTH_LOGIN = AUTH + "/login";
     public static final String AUTH_REGISTER = AUTH + "/register";
 
-    public static final String USER_ME = USER + "/me";
+    public static final String USER_PROFILE = USER + "/profile";
 
     public static final String USER_LIST = USER + "/list";
 

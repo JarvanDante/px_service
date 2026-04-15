@@ -17,13 +17,13 @@ import java.util.Map;
 public class UserController {
 
     private final AuthService authService;
-    
+
     public UserController(AuthService authService) {
         this.authService = authService;
     }
 
-    @GetMapping(ApiRoutes.USER_ME)
-    public ApiResponse<Map> me(HttpServletRequest request) {
+    @GetMapping(ApiRoutes.USER_PROFILE)
+    public ApiResponse<Map> profile(HttpServletRequest request) {
         Long userId = UserContext.getUserId();
         String username = UserContext.getUsername();
         Long siteId = UserContext.getSiteId();
