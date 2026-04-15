@@ -1,6 +1,6 @@
 package com.example.px_service.config;
 
-import com.example.px_service.common.ApiRoutes;
+import com.example.px_service.common.routes.ApiRoutes;
 import com.example.px_service.interceptor.TokenInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

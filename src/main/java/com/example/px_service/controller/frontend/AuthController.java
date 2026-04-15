@@ -1,7 +1,7 @@
 package com.example.px_service.controller.frontend;
 
-import com.example.px_service.common.ApiResponse;
-import com.example.px_service.common.ApiRoutes;
+import com.example.px_service.common.response.ApiResponse;
+import com.example.px_service.common.routes.ApiRoutes;
 import com.example.px_service.domain.User;
 import com.example.px_service.dto.frontend.Auth.LoginRequest;
 import com.example.px_service.dto.frontend.Auth.LoginResponse;

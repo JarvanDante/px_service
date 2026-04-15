@@ -1,4 +1,4 @@
-package com.example.px_service.common;
+package com.example.px_service.common.response;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
-package com.example.px_service.common;
+package com.example.px_service.common.code;
 
-public enum ErrorCode {
+public enum BizCode {
 
     // 1xxx: 认证(auth)
     //账号或密码错误
@@ -14,7 +14,7 @@ public enum ErrorCode {
     private final int code;
     private final String messageKey;
 
-    ErrorCode(int code, String messageKey) {
+    BizCode(int code, String messageKey) {
         this.code = code;
         this.messageKey = messageKey;
     }

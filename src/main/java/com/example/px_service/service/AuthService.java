@@ -1,7 +1,7 @@
 package com.example.px_service.service;
 
-import com.example.px_service.common.BizException;
-import com.example.px_service.common.ErrorCode;
+import com.example.px_service.common.code.BizCode;
+import com.example.px_service.common.exception.BizException;
 import com.example.px_service.domain.User;
 import com.example.px_service.dto.UserResponse;
 import com.example.px_service.dto.frontend.Auth.LoginRequest;
@@ -60,13 +60,13 @@ public class AuthService {
 
         //用户名唯一
         if (!userRepository.existsByUsername(username)) {
-            throw new BizException(ErrorCode.USERNAME_NOT_EXIST);
+            throw new BizException(BizCode.USERNAME_NOT_EXIST);
         }
         //密码判断
         User user = userRepository.findByUsername(username);
         Boolean isMatch = passwordEncoder.matches(password, user.getPassword());
         if (!isMatch) {
-            throw new BizException(ErrorCode.AUTH_INVALID_CREDENTIALS);
+            throw new BizException(BizCode.AUTH_INVALID_CREDENTIALS);
         }
 
         String token = jwtUtil.generateToken(user.getId());
@@ -97,7 +97,7 @@ public class AuthService {
         String mobile = regDto.getMobile();
         //用户名唯一
         if (userRepository.existsByUsername(regDto.getUsername())) {
-            throw new BizException(ErrorCode.USERNAME_DUPLICATE);
+            throw new BizException(BizCode.USERNAME_DUPLICATE);
         }
 
         //插入用户

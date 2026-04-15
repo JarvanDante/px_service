@@ -1,4 +1,4 @@
-package com.example.px_service.common;
+package com.example.px_service.common.code;
 
 public enum ResultCode {
 

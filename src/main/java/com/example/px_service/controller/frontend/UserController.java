@@ -1,7 +1,7 @@
 package com.example.px_service.controller.frontend;
 
-import com.example.px_service.common.ApiResponse;
-import com.example.px_service.common.ApiRoutes;
+import com.example.px_service.common.response.ApiResponse;
+import com.example.px_service.common.routes.ApiRoutes;
 import com.example.px_service.dto.UserResponse;
 import com.example.px_service.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;

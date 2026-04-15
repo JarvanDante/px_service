@@ -1,4 +1,4 @@
-package com.example.px_service.common;
+package com.example.px_service.common.routes;
 
 public final class ApiRoutes {
 
