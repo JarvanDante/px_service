@@ -7,6 +7,7 @@ import com.example.px_service.dto.UserResponse;
 import com.example.px_service.dto.frontend.Auth.LoginRequest;
 import com.example.px_service.dto.frontend.Auth.LoginResponse;
 import com.example.px_service.dto.frontend.Auth.RegisterRequest;
+import com.example.px_service.dto.frontend.user.UserListRequest;
 import com.example.px_service.repository.UserRepository;
 import com.example.px_service.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -42,10 +44,13 @@ public class AuthService {
      * @return
      */
     @Transactional(readOnly = true)
-    public List<UserResponse> listUsers() {
-        PageRequest page = PageRequest.of(0, 5, Sort.by("id").descending());
+    public List<UserResponse> listUsers(@ModelAttribute UserListRequest dto) {
+        //接收参数 page 和 size
+        Integer page = dto.getPage();
+        Integer size = dto.getSize();
+        PageRequest pageNew = PageRequest.of(page, size, Sort.by("id").descending());
 
-        List userList = userRepository.findAll(page)
+        List userList = userRepository.findAll(pageNew)
                 .stream()
                 .map(UserResponse::from)
                 .toList();

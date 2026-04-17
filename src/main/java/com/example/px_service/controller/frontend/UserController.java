@@ -4,9 +4,12 @@ import com.example.px_service.common.context.UserContext;
 import com.example.px_service.common.response.ApiResponse;
 import com.example.px_service.common.routes.ApiRoutes;
 import com.example.px_service.dto.UserResponse;
+import com.example.px_service.dto.frontend.user.UserListRequest;
 import com.example.px_service.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -38,8 +41,8 @@ public class UserController {
     }
 
     @GetMapping(ApiRoutes.USER_LIST)
-    public ApiResponse<List<UserResponse>> listUsers() {
-        return ApiResponse.success(authService.listUsers());
+    public ApiResponse<List<UserResponse>> listUsers(@Valid @ModelAttribute UserListRequest dto) {
+        return ApiResponse.success(authService.listUsers(dto));
     }
 
 }
