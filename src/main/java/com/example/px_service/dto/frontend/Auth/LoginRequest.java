@@ -15,6 +15,13 @@ public class LoginRequest {
 //    @Max(value = 16, message = "密码必须小于等于16")
     private String password;
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;
