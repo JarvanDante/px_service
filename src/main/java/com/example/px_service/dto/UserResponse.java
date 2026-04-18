@@ -20,4 +20,34 @@ public record UserResponse(
                 user.getRegisterUrl()
         );
     }
+
+    @Override
+    public long id() {
+        return id;
+    }
+
+    @Override
+    public Integer siteId() {
+        return siteId;
+    }
+
+    @Override
+    public Integer channelId() {
+        return channelId;
+    }
+
+    @Override
+    public String username() {
+        return username;
+    }
+
+    @Override
+    public String registerIp() {
+        return registerIp;
+    }
+
+    @Override
+    public String registerUrl() {
+        return registerUrl;
+    }
 }

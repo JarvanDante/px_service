@@ -10,7 +10,6 @@ import com.example.px_service.dto.frontend.Auth.RegisterRequest;
 import com.example.px_service.dto.frontend.user.UserListRequest;
 import com.example.px_service.repository.UserRepository;
 import com.example.px_service.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,17 +23,15 @@ import java.util.List;
 @Service
 public class AuthService {
 
-    @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepository userRepository, JwtUtil jwtUtil) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
 
