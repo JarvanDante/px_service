@@ -8,6 +8,7 @@
         <version>4.0.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+    <!--    描述当前项目信息-->
     <groupId>com.example</groupId>
     <artifactId>px_service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -29,6 +30,7 @@
     <properties>
         <java.version>21</java.version>
     </properties>
+    <!--    描述当前项目的依赖信息-->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -108,6 +110,15 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-Xshare:off
+                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                    </argLine>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
