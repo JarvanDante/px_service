@@ -21,6 +21,8 @@ public final class ApiRoutes {
 
     public static final String USER_LIST = USER + "/list";
 
+    public static final String USER_ONE = USER + "/{id}";
+
     public static final String[] PUBLIC_WHITELIST = {
             AUTH_LOGIN,
             AUTH_REGISTER,
