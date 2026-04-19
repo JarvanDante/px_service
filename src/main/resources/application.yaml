@@ -8,10 +8,11 @@ spring:
     url: ${DB_URL:jdbc:mysql://localhost:3306/px_site?useSSL=false&serverTimezone=Asia/Shanghai}
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:654321}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
-      open-in-view: false
+    open-in-view: false
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -24,6 +25,12 @@ spring:
     fallback-to-system-locale: false
   jwt:
     key-secret: ${JWT_KEY_SECRET:12345678901234567890123456789012}
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.px_service.domain
 
 logging:
   file:
