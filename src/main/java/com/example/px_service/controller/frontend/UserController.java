@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -52,7 +53,11 @@ public class UserController {
     }
 
     @GetMapping(ApiRoutes.USER_ONE)
-    public User getUser(Integer id) {
-        return userService.getUser(id);
+    public ApiResponse<UserResponse> getUser(@PathVariable Integer id) {
+        User user = userService.getUser(id);
+        if (user == null) {
+            return ApiResponse.error("User not found", 404);
+        }
+        return ApiResponse.success(UserResponse.from(user));
     }
 }
