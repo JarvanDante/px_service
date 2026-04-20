@@ -8,10 +8,8 @@ import com.example.px_service.dto.frontend.Auth.LoginRequest;
 import com.example.px_service.dto.frontend.Auth.LoginResponse;
 import com.example.px_service.dto.frontend.Auth.RegisterRequest;
 import com.example.px_service.dto.frontend.user.UserListRequest;
-import com.example.px_service.repository.UserRepository;
+import com.example.px_service.mapper.UserMapper;
 import com.example.px_service.util.JwtUtil;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +21,14 @@ import java.util.List;
 @Service
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     private final PasswordEncoder passwordEncoder;
 
     private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
+    public AuthService(UserMapper userMapper, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+        this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
@@ -45,9 +43,11 @@ public class AuthService {
         //接收参数 page 和 size
         Integer page = dto.getPage();
         Integer size = dto.getSize();
-        PageRequest pageNew = PageRequest.of(page, size, Sort.by("id").descending());
+        int safePage = page == null ? 1 : Math.max(page, 0);
+        int safeSize = size == null ? 10 : Math.max(size, 1);
+        int offset = safePage * safeSize;
 
-        List userList = userRepository.findAll(pageNew)
+        List userList = userMapper.listUsers(offset, safeSize)
                 .stream()
                 .map(UserResponse::from)
                 .toList();
@@ -61,11 +61,11 @@ public class AuthService {
         String password = loginDto.getPassword();
 
         //用户名唯一
-        if (!userRepository.existsByUsername(username)) {
+        if (!userMapper.existsByUsername(username)) {
             throw new BizException(BizCode.USERNAME_NOT_EXIST);
         }
         //密码判断
-        User user = userRepository.findByUsername(username);
+        User user = userMapper.findByUsername(username);
         Boolean isMatch = passwordEncoder.matches(password, user.getPassword());
         if (!isMatch) {
             throw new BizException(BizCode.AUTH_INVALID_CREDENTIALS);
@@ -98,7 +98,7 @@ public class AuthService {
     public User createUser(@RequestBody RegisterRequest regDto) {
         String mobile = regDto.getMobile();
         //用户名唯一
-        if (userRepository.existsByUsername(regDto.getUsername())) {
+        if (userMapper.existsByUsername(regDto.getUsername())) {
             throw new BizException(BizCode.USERNAME_DUPLICATE);
         }
 
@@ -110,9 +110,8 @@ public class AuthService {
             newUser.setMobile(mobile);
         }
 
-        User savedUser = userRepository.save(newUser);
-
-        return savedUser;
+        userMapper.insert(newUser);
+        return newUser;
     }
 
 

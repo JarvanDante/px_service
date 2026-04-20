@@ -1,15 +1,9 @@
 package com.example.px_service.domain;
 
-import jakarta.persistence.*;
-
 import java.time.Instant;
 
-@Entity
-@Table(name = "admin", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class Admin {
     //主键自增
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Integer siteId = 1;

@@ -8,7 +8,7 @@ import com.example.px_service.dto.frontend.Auth.LoginRequest;
 import com.example.px_service.dto.frontend.Auth.LoginResponse;
 import com.example.px_service.dto.frontend.Auth.RegisterRequest;
 import com.example.px_service.dto.frontend.user.UserListRequest;
-import com.example.px_service.repository.UserRepository;
+import com.example.px_service.mapper.UserMapper;
 import com.example.px_service.service.AuthService;
 import com.example.px_service.util.JwtUtil;
 import org.junit.jupiter.api.Test;
@@ -17,10 +17,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
@@ -36,7 +32,7 @@ import static org.mockito.Mockito.*;
 public class AuthServiceTest {
 
     @Mock
-    private UserRepository userRepository;
+    private UserMapper userMapper;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -53,15 +49,15 @@ public class AuthServiceTest {
         when(request.getUsername()).thenReturn("existinguser");
         when(request.getMobile()).thenReturn("13800138000");
 
-        when(userRepository.existsByUsername("existinguser")).thenReturn(true);
+        when(userMapper.existsByUsername("existinguser")).thenReturn(true);
 
         assertThatThrownBy(() -> authService.createUser(request))
                 .isInstanceOfSatisfying(BizException.class, ex -> {
                     assertThat(ex.getErrorCode()).isEqualTo(BizCode.USERNAME_DUPLICATE);
                 });
 
-        verify(userRepository).existsByUsername("existinguser");
-        verifyNoMoreInteractions(userRepository);
+        verify(userMapper).existsByUsername("existinguser");
+        verifyNoMoreInteractions(userMapper);
         verifyNoInteractions(passwordEncoder);
     }
 
@@ -78,15 +74,13 @@ public class AuthServiceTest {
         when(request.getPassword()).thenReturn(rawPassword);
         when(request.getMobile()).thenReturn(mobile);
 
-        User savedUser = new User();
-        savedUser.setId(userId.intValue());
-        savedUser.setUsername(username);
-        savedUser.setPassword(encodedPassword);
-        savedUser.setMobile(mobile);
-
-        when(userRepository.existsByUsername(username)).thenReturn(false);
+        when(userMapper.existsByUsername(username)).thenReturn(false);
         when(passwordEncoder.encode(rawPassword)).thenReturn(encodedPassword);
-        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+        when(userMapper.insert(any(User.class))).thenAnswer(invocation -> {
+            User user = invocation.getArgument(0);
+            user.setId(userId.intValue());
+            return 1;
+        });
 
         User result = authService.createUser(request);
 
@@ -96,14 +90,14 @@ public class AuthServiceTest {
         assertThat(result.getMobile()).isEqualTo(mobile);
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(userCaptor.capture());
+        verify(userMapper).insert(userCaptor.capture());
 
         User capturedUser = userCaptor.getValue();
         assertThat(capturedUser.getUsername()).isEqualTo(username);
         assertThat(capturedUser.getPassword()).isEqualTo(encodedPassword);
         assertThat(capturedUser.getMobile()).isEqualTo(mobile);
 
-        verify(userRepository).existsByUsername(username);
+        verify(userMapper).existsByUsername(username);
         verify(passwordEncoder).encode(rawPassword);
     }
 
@@ -119,14 +113,13 @@ public class AuthServiceTest {
         when(request.getPassword()).thenReturn(rawPassword);
         when(request.getMobile()).thenReturn(null);
 
-        User savedUser = new User();
-        savedUser.setId(userId.intValue());
-        savedUser.setUsername(username);
-        savedUser.setPassword(encodedPassword);
-
-        when(userRepository.existsByUsername(username)).thenReturn(false);
+        when(userMapper.existsByUsername(username)).thenReturn(false);
         when(passwordEncoder.encode(rawPassword)).thenReturn(encodedPassword);
-        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+        when(userMapper.insert(any(User.class))).thenAnswer(invocation -> {
+            User user = invocation.getArgument(0);
+            user.setId(userId.intValue());
+            return 1;
+        });
 
         User result = authService.createUser(request);
 
@@ -136,14 +129,14 @@ public class AuthServiceTest {
         assertThat(result.getMobile()).isNull();
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(userCaptor.capture());
+        verify(userMapper).insert(userCaptor.capture());
 
         User capturedUser = userCaptor.getValue();
         assertThat(capturedUser.getUsername()).isEqualTo(username);
         assertThat(capturedUser.getPassword()).isEqualTo(encodedPassword);
         assertThat(capturedUser.getMobile()).isNull();
 
-        verify(userRepository).existsByUsername(username);
+        verify(userMapper).existsByUsername(username);
         verify(passwordEncoder).encode(rawPassword);
     }
 
@@ -153,15 +146,14 @@ public class AuthServiceTest {
         request.setPage(1);
         request.setSize(10);
 
-        Page<User> emptyPage = new PageImpl<>(Collections.emptyList());
-        when(userRepository.findAll(any(PageRequest.class))).thenReturn(emptyPage);
+        when(userMapper.listUsers(10, 10)).thenReturn(Collections.emptyList());
 
         List<UserResponse> result = authService.listUsers(request);
 
         assertThat(result).isNotNull();
         assertThat(result).isEmpty();
 
-        verify(userRepository).findAll(any(PageRequest.class));
+        verify(userMapper).listUsers(10, 10);
     }
 
     @Test
@@ -179,9 +171,7 @@ public class AuthServiceTest {
         user2.setEmail("user2@example.com");
 
         List<User> userList = List.of(user1, user2);
-        Page<User> userPage = new PageImpl<>(userList);
-
-        when(userRepository.findAll(any(PageRequest.class))).thenReturn(userPage);
+        when(userMapper.listUsers(0, 2)).thenReturn(userList);
 
         List<UserResponse> result = authService.listUsers(request);
 
@@ -196,24 +186,18 @@ public class AuthServiceTest {
         assertThat(result.get(1).siteId()).isEqualTo(user2.getSiteId());
         assertThat(result.get(1).channelId()).isEqualTo(user2.getChannelId());
 
-        verify(userRepository).findAll(any(PageRequest.class));
+        verify(userMapper).listUsers(0, 2);
     }
 
     @Test
     void listUsers_shouldUseDefaultPageParameters_whenNotProvided() {
         UserListRequest request = new UserListRequest();
 
-        Page<User> emptyPage = new PageImpl<>(Collections.emptyList());
-        when(userRepository.findAll(any(PageRequest.class))).thenReturn(emptyPage);
+        when(userMapper.listUsers(10, 10)).thenReturn(Collections.emptyList());
 
         authService.listUsers(request);
 
-        verify(userRepository).findAll(argThat((Pageable pageRequest) ->
-                pageRequest.getPageNumber() == 1 &&
-                        pageRequest.getPageSize() == 10 &&
-                        pageRequest.getSort().getOrderFor("id") != null &&
-                        pageRequest.getSort().getOrderFor("id").isDescending()
-        ));
+        verify(userMapper).listUsers(10, 10);
     }
 
     @Test
@@ -222,15 +206,15 @@ public class AuthServiceTest {
         request.setUsername("test");
         request.setPassword("password");
 
-        when(userRepository.existsByUsername(request.getUsername())).thenReturn(false);
+        when(userMapper.existsByUsername(request.getUsername())).thenReturn(false);
 
         assertThatThrownBy(() -> authService.loginUser(request))
                 .isInstanceOfSatisfying(BizException.class, ex -> {
                     assertThat(ex.getErrorCode()).isEqualTo(BizCode.USERNAME_NOT_EXIST);
                 });
 
-        verify(userRepository).existsByUsername(request.getUsername());
-        verifyNoMoreInteractions(userRepository);
+        verify(userMapper).existsByUsername(request.getUsername());
+        verifyNoMoreInteractions(userMapper);
         verifyNoInteractions(passwordEncoder, jwtUtil);
     }
 
@@ -246,8 +230,8 @@ public class AuthServiceTest {
         request.setUsername(username);
         request.setPassword(rawPassword);
 
-        when(userRepository.existsByUsername(username)).thenReturn(true);
-        when(userRepository.findByUsername(username)).thenReturn(user);
+        when(userMapper.existsByUsername(username)).thenReturn(true);
+        when(userMapper.findByUsername(username)).thenReturn(user);
         when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(false);
 
         assertThatThrownBy(() -> authService.loginUser(request))
@@ -255,8 +239,8 @@ public class AuthServiceTest {
                     assertThat(ex.getErrorCode()).isEqualTo(BizCode.AUTH_INVALID_CREDENTIALS);
                 });
 
-        verify(userRepository).existsByUsername(username);
-        verify(userRepository).findByUsername(username);
+        verify(userMapper).existsByUsername(username);
+        verify(userMapper).findByUsername(username);
         verify(passwordEncoder).matches(rawPassword, encodedPassword);
         verifyNoInteractions(jwtUtil);
     }
@@ -278,8 +262,8 @@ public class AuthServiceTest {
         request.setUsername(username);
         request.setPassword(rawPassword);
 
-        when(userRepository.existsByUsername(username)).thenReturn(true);
-        when(userRepository.findByUsername(username)).thenReturn(user);
+        when(userMapper.existsByUsername(username)).thenReturn(true);
+        when(userMapper.findByUsername(username)).thenReturn(user);
         when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true);
         when(jwtUtil.generateToken(user, "app")).thenReturn(generatedToken);
 
@@ -293,8 +277,8 @@ public class AuthServiceTest {
         assertThat(response.getUserInfo().getUsername()).isEqualTo(username);
         assertThat(response.getUserInfo().getEmail()).isEqualTo(email);
 
-        verify(userRepository).existsByUsername(username);
-        verify(userRepository).findByUsername(username);
+        verify(userMapper).existsByUsername(username);
+        verify(userMapper).findByUsername(username);
         verify(passwordEncoder).matches(rawPassword, encodedPassword);
         verify(jwtUtil).generateToken(user, "app");
     }

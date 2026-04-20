@@ -9,14 +9,6 @@ spring:
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:654321}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -38,9 +30,6 @@ mybatis:
   type-aliases-package: com.example.px_service.domain
 
 logging:
-  level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.orm.jdbc.bind: TRACE
   file:
     name: logs/app.log
   logback:

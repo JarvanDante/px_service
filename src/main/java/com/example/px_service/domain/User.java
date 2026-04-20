@@ -1,15 +1,9 @@
 package com.example.px_service.domain;
 
-import jakarta.persistence.*;
-
 import java.time.Instant;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Integer siteId = 1;
@@ -30,16 +24,13 @@ public class User {
     private Integer status;
     private String registerIp;
     private Instant registerTime;
-    @Column(columnDefinition = "TEXT")
     private String registerUrl;
     private Integer registerDevice;
     private String deviceCode;
     private String lastLoginIp;
     private Instant lastLoginTime;
     private String lastLoginAddress;
-    @Column(length = 50)
     private String realname;
-    @Column(length = 20)
     private String mobile;
     private String email;
     private String qq;
@@ -48,9 +39,7 @@ public class User {
     private Integer isOnline;
     private Integer focusLevel;
     private Integer balanceStatus;
-    @Column(length = 100)
     private String safeQuestion;
-    @Column(length = 100)
     private String safeAnswer;
     private Integer showBeginnerGuide;
     private String remark = "";
