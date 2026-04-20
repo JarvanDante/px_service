@@ -67,7 +67,7 @@ public class AuthServiceTest {
         String rawPassword = "password123";
         String encodedPassword = "$2a$10$encodedPasswordHash";
         String mobile = "13800138000";
-        Long userId = 100L;
+        Integer userId = 100;
 
         RegisterRequest request = mock(RegisterRequest.class);
         when(request.getUsername()).thenReturn(username);
@@ -106,7 +106,7 @@ public class AuthServiceTest {
         String username = "newuser2";
         String rawPassword = "password456";
         String encodedPassword = "$2a$10$encodedPasswordHash2";
-        Long userId = 101L;
+        Integer userId = 101;
 
         RegisterRequest request = mock(RegisterRequest.class);
         when(request.getUsername()).thenReturn(username);
@@ -251,7 +251,7 @@ public class AuthServiceTest {
         String rawPassword = "correctpassword";
         String encodedPassword = "$2a$10$encodedPasswordHash";
         String generatedToken = "mocked.jwt.token";
-        Long userId = 1L;
+        Integer userId = 1;
         String email = "test@example.com";
 
         User user = createUser(username, encodedPassword);

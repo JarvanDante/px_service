@@ -13,7 +13,8 @@ public enum BizCode {
     USERNAME_DUPLICATE(2001, "user.username.duplicate"),
     //用户名不存在
     USERNAME_NOT_EXIST(2002, "user.username.notExist"),
-    USER_NOT_EXIST(2003, "user.user.notExist");
+    USER_NOT_EXIST(2003, "user.user.notExist"),
+    USER_UPDATE_FAILED(2003, "user.update.failed");
 
     private final int code;
     private final String messageKey;

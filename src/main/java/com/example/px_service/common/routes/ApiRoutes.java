@@ -26,6 +26,8 @@ public final class ApiRoutes {
     public static final String USER_ONE = USER + "/{id}";
     //删除用户
     public static final String USER_DELETE = USER + "/{id}";
+    //修改用户
+    public static final String USER_UPDATE = USER + "/{id}";
 
     public static final String[] PUBLIC_WHITELIST = {
             AUTH_LOGIN,

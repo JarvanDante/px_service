@@ -54,7 +54,7 @@ public class User {
     private Integer deleteAt;
     //=====set and get
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 

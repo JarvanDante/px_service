@@ -3,7 +3,7 @@ package com.example.px_service.dto;
 import com.example.px_service.domain.User;
 
 public record UserResponse(
-        long id,
+        Integer id,
         Integer siteId,
         Integer channelId,
         String username,
@@ -22,7 +22,7 @@ public record UserResponse(
     }
 
     @Override
-    public long id() {
+    public Integer id() {
         return id;
     }
 
