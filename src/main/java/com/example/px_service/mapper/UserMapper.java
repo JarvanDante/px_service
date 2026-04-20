@@ -1,11 +1,7 @@
 package com.example.px_service.mapper;
 
 import com.example.px_service.domain.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -35,4 +31,7 @@ public interface UserMapper {
             """)
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insert(User user);
+
+    @Delete("delete from user where id = #{id}")
+    void deleteById(Integer id);
 }

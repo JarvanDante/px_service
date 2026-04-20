@@ -11,10 +11,7 @@ import com.example.px_service.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,4 +57,11 @@ public class UserController {
         }
         return ApiResponse.success(UserResponse.from(user));
     }
+
+    @DeleteMapping(ApiRoutes.USER_DELETE)
+    public ApiResponse<Void> deleteUser(@PathVariable Integer id) {
+        userService.deleteUser(id);
+        return ApiResponse.success(null);
+    }
+
 }
