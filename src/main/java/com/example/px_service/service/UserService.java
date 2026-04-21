@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
+    //获取用户
+    User getUser(Integer id);
 
     //删除用户
     Void deleteUser(Integer id);
