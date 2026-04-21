@@ -8,7 +8,7 @@ import com.example.px_service.dto.UserResponse;
 import com.example.px_service.dto.frontend.user.UserListRequest;
 import com.example.px_service.dto.frontend.user.UserUpdateRequest;
 import com.example.px_service.service.AuthService;
-import com.example.px_service.service.UserService;
+import com.example.px_service.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.jspecify.annotations.NonNull;
@@ -26,7 +26,7 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
