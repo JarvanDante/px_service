@@ -1,5 +1,6 @@
 package com.example.px_service.service.impl;
 
+import com.example.px_service.anno.OperationLog;
 import com.example.px_service.common.enums.BizCode;
 import com.example.px_service.common.exception.BizException;
 import com.example.px_service.domain.User;
@@ -13,6 +14,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @OperationLog
     public User getUser(Integer id) {
         return userMapper.findById(id);
     }
