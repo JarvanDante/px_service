@@ -1,5 +1,7 @@
 package com.example.px_service.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.px_service.common.enums.BizCode;
 import com.example.px_service.common.exception.BizException;
 import com.example.px_service.domain.User;
@@ -48,12 +50,13 @@ public class AuthServiceImpl implements AuthService {
         int safeSize = size == null ? 10 : Math.max(size, 1);
         int offset = safePage * safeSize;
 
-        List userList = userMapper.listUsers(offset, safeSize)
-                .stream()
-                .map(UserResponse::from)
-                .toList();
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>();
+        lambdaQueryWrapper.select(User::getId, User::getSiteId, User::getChannelId, User::getUsername, User::getRegisterIp, User::getRegisterUrl);
+        lambdaQueryWrapper.last("LIMIT " + offset + "," + safeSize);
 
-        return userList;
+        List<User> userList = userMapper.selectList(lambdaQueryWrapper);
+        List<UserResponse> userResponseList = userList.stream().map(UserResponse::from).toList();
+        return userResponseList;
     }
 
     @Transactional
@@ -61,12 +64,17 @@ public class AuthServiceImpl implements AuthService {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
 
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        User user = userMapper.selectOne(queryWrapper);
+
+
         //用户名唯一
-        if (!userMapper.existsByUsername(username)) {
+        if (user == null) {
             throw new BizException(BizCode.USERNAME_NOT_EXIST);
         }
         //密码判断
-        User user = userMapper.findByUsername(username);
+//        User user = userMapper.findByUsername(username);
         Boolean isMatch = passwordEncoder.matches(password, user.getPassword());
         if (!isMatch) {
             throw new BizException(BizCode.AUTH_INVALID_CREDENTIALS);
@@ -98,8 +106,11 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public User createUser(@RequestBody RegisterRequest regDto) {
         String mobile = regDto.getMobile();
-        //用户名唯一
-        if (userMapper.existsByUsername(regDto.getUsername())) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", regDto.getUsername());
+        // 用户名唯一
+        User existingUser = userMapper.selectOne(queryWrapper);
+        if (existingUser != null) {
             throw new BizException(BizCode.USERNAME_DUPLICATE);
         }
 

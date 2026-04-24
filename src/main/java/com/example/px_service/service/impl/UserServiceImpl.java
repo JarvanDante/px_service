@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     @OperationLog
     public User getUser(Integer id) {
-        return userMapper.findById(id);
+        return userMapper.selectById(id);
     }
 
     /**
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
      */
     public Void deleteUser(Integer id) {
 
-        User user = userMapper.findById(id);
+        User user = userMapper.selectById(id);
         if (user == null) {
             throw new BizException(BizCode.USER_NOT_EXIST);
         }
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
      */
     public User updateUser(Integer id, User user) {
         // 检查用户是否存在
-        User oldUser = userMapper.findById(id);
+        User oldUser = userMapper.selectById(id);
         if (oldUser == null) {
             throw new BizException(BizCode.USER_NOT_EXIST);
         }
@@ -53,11 +53,11 @@ public class UserServiceImpl implements UserService {
         oldUser.setMobile(user.getMobile());
 
         // 执行更新操作并验证结果
-        int updateCount = userMapper.update(oldUser);
+        int updateCount = userMapper.updateById(oldUser);
         if (updateCount <= 0) {
             throw new BizException(BizCode.USER_UPDATE_FAILED);
         }
 
-        return userMapper.findById(oldUser.getId());
+        return userMapper.selectById(oldUser.getId());
     }
 }
