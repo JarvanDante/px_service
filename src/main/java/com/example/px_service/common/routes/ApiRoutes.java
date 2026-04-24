@@ -32,6 +32,9 @@ public final class ApiRoutes {
     public static final String[] PUBLIC_WHITELIST = {
             AUTH_LOGIN,
             AUTH_REGISTER,
-            "/error"
+            "/error",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/v3/api-docs"
     };
 }

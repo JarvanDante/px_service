@@ -109,11 +109,19 @@
         <!--            <artifactId>mybatis-spring-boot-starter</artifactId>-->
         <!--            <version>3.0.3</version>-->
         <!--        </dependency>-->
+
         <!--        引入MyBatisPlus依赖-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-spring-boot4-starter</artifactId>
             <version>3.5.15</version>
+        </dependency>
+
+        <!--        Swagger3.0-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>3.0.0</version>
         </dependency>
 
         <dependency>
