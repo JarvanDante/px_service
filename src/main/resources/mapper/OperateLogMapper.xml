@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.px_service.mapper.OperateLogMapper">
     <insert id="insert">
-        INSERT INTO operate_log (operate_emp_id, operate_time, className, method_name, method_params, return_value,
+        INSERT INTO operate_log (operate_emp_id, operate_time, class_name, method_name, method_params, return_value,
         cost_time) VALUES (#{operateEmpId}, #{operateTime}, #{className}, #{methodName}, #{methodParams},
         #{returnValue}, #{costTime})
     </insert>
