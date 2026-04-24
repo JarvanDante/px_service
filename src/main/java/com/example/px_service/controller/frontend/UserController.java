@@ -9,6 +9,10 @@ import com.example.px_service.dto.frontend.user.UserListRequest;
 import com.example.px_service.dto.frontend.user.UserUpdateRequest;
 import com.example.px_service.service.AuthService;
 import com.example.px_service.service.impl.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.jspecify.annotations.NonNull;
@@ -52,13 +56,20 @@ public class UserController {
         return ApiResponse.success(map);
     }
 
+    @Tag(name = "用户管理", description = "用户管理相关的接口")
+    @Operation(summary = "用户列表", description = "获取用户列表")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "成功"),
+    })
     @GetMapping(ApiRoutes.USER_LIST)
     public ApiResponse<List<UserResponse>> listUsers(@Valid @ModelAttribute UserListRequest dto) {
         return ApiResponse.success(authService.listUsers(dto));
     }
 
+    @Tag(name = "用户管理", description = "用户管理相关的接口")
+    @Operation(summary = "当前用户", description = "获取当前用户信息")
     @GetMapping(ApiRoutes.USER_ONE)
-    public ApiResponse<UserResponse> getUser(@PathVariable Integer id) {
+    public ApiResponse<UserResponse> getUser(@Parameter(description = "用户的ID", example = "1000361") @PathVariable Integer id) {
         User user = userService.getUser(id);
         if (user == null) {
             return ApiResponse.error("User not found", 404);
